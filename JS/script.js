@@ -1,27 +1,8 @@
-const previousOperationText = document.querySelector("#previous-operation");
-const currentOperationText = document.querySelector("#current-operation");
-const buttons = document.querySelectorAll("#buttons-container button");
-
-class Calculator {
-    constructor(previousOperationText, currentOperationText) {
-        this.previousOperationText = previousOperationText;
-        this.currentOperationText = currentOperationText;
-        this.currentOperation = "";
-    }
-
-}
-
-const calc = new Calculator(previousOperationText, currentOperationText);
-
-buttons.forEach((btn) => {
-    btn.addEventListener("click", (e) => {
-        const value = e.target.innerText;
-
-        if (+value >= 0 || value === ".") {
-            console.log(value);
-        }
-        else {
-            console.log("Op " + value);
-        }
-    })
-});
+const previousOperationText = document.querySelector('[data-previous-operation]');
+const currentOperationText = document.querySelector('[data-current-operation]');
+const numberButtons = document.querySelectorAll('[data-number]');
+const operatorButtons = document.querySelectorAll('[data-operator]');
+const equalButtons = document.querySelector('[data-equal]');
+const deleteButtons = document.querySelector('[data-delete]');
+const porcentageButtons = document.querySelector('[data-percentage]');
+const allCleanButtons = document.querySelector('[data-all-clean]');
