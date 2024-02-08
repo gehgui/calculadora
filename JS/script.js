@@ -25,10 +25,11 @@ class Calculator {
     if (isNaN(integerDigits)) {
       integerDisplay = "";
     } else {
-      integerDisplay = integerDigits.toLocaleString("de-DE", {
+      integerDisplay = integerDigits.toLocaleString("pt-BR", {
         maximumFractionDigits: 0,
       });
     }
+    console.log(this.currentOperation);
 
     if (decimalDigits != null) {
       return `${integerDisplay}.${decimalDigits}`;
@@ -82,7 +83,7 @@ class Calculator {
   }
 
   appendNumber(number) {
-    if (this.currentOperation.includes(",") && number === ",") return;
+    if (this.currentOperation.includes(",") && number == ",") return;
     this.currentOperation = `${this.currentOperation}${number.toString()}`;
   }
 
@@ -93,9 +94,9 @@ class Calculator {
   }
 
   updateDisplay() {
-    this.previousOperationText.innerText = `${this.previousOperation} ${
-      this.operator || ""
-    }`;
+    this.previousOperationText.innerText = `${this.formatDisplayNumber(
+      this.previousOperation
+    )} ${this.operator || ""}`;
     this.currentOperationText.innerText = calculator.formatDisplayNumber(
       this.currentOperation
     );
@@ -103,6 +104,7 @@ class Calculator {
 }
 
 const calculator = new Calculator(previousOperationText, currentOperationText);
+calculator.clear();
 
 for (const numberButton of numberButtons) {
   numberButton.addEventListener("click", () => {
