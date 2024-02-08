@@ -15,9 +15,46 @@ class Calculator {
     this.currentOperationText = currentOperationText;
   }
 
+  delete() {
+    this.currentOperation = this.currentOperation.toString().slice(0, -1);
+  }
+
+  calculate() {
+    let result;
+    const previousOperationFloat = parseFloat(this.previousOperation);
+    const currentOperationFloat = parseFloat(this.currentOperation);
+
+    if (isNaN(previousOperationFloat) || isNaN(currentOperationFloat)) return;
+
+    switch (this.operator) {
+      case "+":
+        result = previousOperationFloat + currentOperationFloat;
+        break;
+      case "-":
+        result = previousOperationFloat - currentOperationFloat;
+        break;
+      case "×":
+        result = previousOperationFloat * currentOperationFloat;
+        break;
+      case "÷":
+        result = previousOperationFloat / currentOperationFloat;
+        break;
+      default:
+        result;
+    }
+
+    this.currentOperation = result;
+    this.operator = undefined;
+    this.previousOperation = "";
+  }
+
   chooseOperatior(operator) {
+    if (this.previousOperation != "") {
+      this.calculate();
+    }
+
     this.operator = operator;
-    this.previousOperation = `${this.currentOperation} ${this.operator}`;
+    this.previousOperation = this.currentOperation;
     this.currentOperation = "";
   }
 
@@ -33,7 +70,9 @@ class Calculator {
   }
 
   updateDisplay() {
-    this.previousOperationText.innerText = this.previousOperation;
+    this.previousOperationText.innerText = `${this.previousOperation} ${
+      this.operator || ""
+    }`;
     this.currentOperationText.innerText = this.currentOperation;
   }
 }
@@ -56,5 +95,15 @@ for (const operatorButton of operatorButtons) {
 
 allCleanButton.addEventListener("click", () => {
   calculator.clear();
+  calculator.updateDisplay();
+});
+
+equalButtons.addEventListener("click", () => {
+  calculator.calculate();
+  calculator.updateDisplay();
+});
+
+deleteButtons.addEventListener("click", () => {
+  calculator.delete();
   calculator.updateDisplay();
 });
