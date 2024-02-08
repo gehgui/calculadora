@@ -15,6 +15,28 @@ class Calculator {
     this.currentOperationText = currentOperationText;
   }
 
+  formatDisplayNumber(number) {
+    const stringNumber = number.toString();
+    const integerDigits = parseFloat(stringNumber.split(",")[0]);
+    const decimalDigits = stringNumber.split(",")[1];
+
+    let integerDisplay;
+
+    if (isNaN(integerDigits)) {
+      integerDisplay = "";
+    } else {
+      integerDisplay = integerDigits.toLocaleString("de-DE", {
+        maximumFractionDigits: 0,
+      });
+    }
+
+    if (decimalDigits != null) {
+      return `${integerDisplay}.${decimalDigits}`;
+    } else {
+      return integerDisplay;
+    }
+  }
+
   delete() {
     this.currentOperation = this.currentOperation.toString().slice(0, -1);
   }
@@ -49,6 +71,7 @@ class Calculator {
   }
 
   chooseOperatior(operator) {
+    if (this.currentOperation == "") return;
     if (this.previousOperation != "") {
       this.calculate();
     }
@@ -59,7 +82,7 @@ class Calculator {
   }
 
   appendNumber(number) {
-    if (this.currentOperation.includes(".") && number === ".") return;
+    if (this.currentOperation.includes(",") && number === ",") return;
     this.currentOperation = `${this.currentOperation}${number.toString()}`;
   }
 
@@ -73,7 +96,9 @@ class Calculator {
     this.previousOperationText.innerText = `${this.previousOperation} ${
       this.operator || ""
     }`;
-    this.currentOperationText.innerText = this.currentOperation;
+    this.currentOperationText.innerText = calculator.formatDisplayNumber(
+      this.currentOperation
+    );
   }
 }
 
